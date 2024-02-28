@@ -1,0 +1,1 @@
+# report-generator-npm-package
