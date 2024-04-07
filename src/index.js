@@ -1,20 +1,20 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-var fs = require("fs");
-var pdfkit_1 = require("pdfkit");
+var fs_1 = require("fs");
+var PDFDocument = require('pdfkit');
 try {
     // reads file content in utf8 encoding
-    var fileContent = fs.readFileSync('../test-folder/script.js', 'utf8');
+    var fileContent = fs_1.default.readFileSync('../test-folder/script.js', 'utf8');
     console.log(fileContent);
 }
 catch (error) {
     console.error("Error reading file: ".concat(error.message));
 }
 // Create a new PDF document object
-var doc = new pdfkit_1.default({ size: 'A4' });
+var doc = new PDFDocument({ size: 'A4' });
 console.log(doc);
 // create pdf document
-doc.pipe(fs.createWriteStream('output.pdf'));
+doc.pipe(fs_1.default.createWriteStream('output.pdf'));
 // Define table headers
 var headers = ["Name", "Age"];
 // Define row data

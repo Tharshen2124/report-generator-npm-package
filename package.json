@@ -2,9 +2,9 @@
   "name": "report-generator-npm-package",
   "version": "1.0.0",
   "description": "Generates a report based on the test cases and their results",
-  "main": "index.mjs",
+  "main": "index.ts",
   "scripts": {
-    "script": "npx tsc index.ts",
+    "script": "npx tsc ./src/index.ts && node ./src/index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
@@ -14,6 +14,7 @@
   },
   "devDependencies": {
     "@types/node": "^20.12.5",
+    "@types/pdfkit": "^0.13.4",
     "typescript": "^5.4.4"
   }
 }
