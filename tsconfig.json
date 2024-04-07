@@ -30,7 +30,7 @@
   },
   "include": [
     "src/*.ts", // telling where your TypeScript files are located
-    "src/**/.ts"
+    "src/**/*.ts"
   ],
   "exclude": [
     "node_modules" // exclude directories from the compilation 

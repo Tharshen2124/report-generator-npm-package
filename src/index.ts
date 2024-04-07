@@ -1,5 +1,5 @@
-import * as fs from 'fs';
-const PDFDocument = require('pdfkit')
+import fs from 'fs';
+import PDFDocument from 'pdfkit'
 
 try {
     // reads file content in utf8 encoding
