@@ -1,23 +1,34 @@
 import fs from 'fs';
 import PDFDocument from 'pdfkit'
+import { title } from 'process';
 
-export default function getCenterAlignCenterPoint(value: number, nextValue: number, width: number): number {
-  const widthAfterMinus = (nextValue - value) - width
-  const margin = widthAfterMinus / 2
-  const point = value + margin
-  console.log('whole width after minus: ', widthAfterMinus)
-  console.log('Width', width)
-  console.log('margin', margin)
-  console.log('Point', point)
-  return point
+function cleanUp(lines: string[], atType: string) {
+  const filteredLines = lines.filter((line) => {
+    return line.includes(atType)
+  })
+
+  const cleanedLines = filteredLines.map((line) => {
+    const brokenLines = line.split(':')
+    return brokenLines[1];
+  })
+
+  return cleanedLines;
 }
 
 try {
   // reads file content in utf8 encoding
-  const fileContent = fs.readFileSync('../test-folder/script.js', 'utf8')
+  console.log("Reading your test files...")
+  const fileContent = fs.readFileSync('../test-folder/script.test.js', 'utf8')
+  const lines = fileContent.split('\n')
+  
+  const titles = cleanUp(lines, '@title')
+  const descriptions = cleanUp(lines, '@description')
+
 } catch (error: any) {
   console.error(`Error reading file: ${error.message}`)
 }
+
+console.log("Test files read, creating document...")
 
 // Create a new PDF document object
 // A4 size is 595.28px x 841.89px
@@ -27,10 +38,10 @@ const doc = new PDFDocument({ size: 'A4' })
 doc.pipe(fs.createWriteStream('output.pdf'))
 
 const headerTexts = [
-  { text: "Test" },
-  { text: "Expected Result" },
-  { text: "Actual Result" },
-  { text: "Pass" }
+  "Test",
+  "Expected Result",
+  "Actual Result",
+  "Pass"
 ]
 
 const columnHeaderPoints = [
@@ -53,22 +64,17 @@ for(let i=0; i<columnHeaderPoints.length-1; i++)
     .lineTo(columnHeaderPoints[i].x, yStarterPoint + headerColumnHeight)
     .lineTo(columnHeaderPoints[i].x, yStarterPoint)
     
-    .font('Times-Roman')
+    .font('Times-Bold')
     .fillAndStroke("#d9d9d9", "#000")
     .fontSize(12)
     .fillColor('black')
-  
-  console.log('-----Round ' + [i+1] + '-----')
-  console.log("Next Value: ", columnHeaderPoints[i+1].x)
-  console.log("Value: ", columnHeaderPoints[i].x)
-  console.log('-----------------------------')
 
-  const width = Math.round(doc.widthOfString(headerTexts[i].text))
-  doc.text(headerTexts[i].text, getCenterAlignCenterPoint(columnHeaderPoints[i].x, columnHeaderPoints[i+1].x, width), 25)  
-  doc.text("hello", 540, 60)
+  doc.text(headerTexts[i], columnHeaderPoints[i].x, 25, {width: (columnHeaderPoints[i+1].x-columnHeaderPoints[i].x), align: 'center'})  
 }
 
 doc.stroke()
 
 // finalise the pdf and end the stream
 doc.end()
+
+console.log('Your document is ready!')
