@@ -81,14 +81,12 @@ let desY = 60
  
 // create rows for data
 for(let i=0; i<2; i++) {
-
   doc.rect(columnHeaderPoints[0].x, y, 160, 100)
     .rect(columnHeaderPoints[1].x, y, 160, 100)
     .rect(columnHeaderPoints[2].x, y, 160, 100)
     .rect(columnHeaderPoints[3].x, y, 75, 100)
     .stroke()
   y += 100
-    
 }
 
 for(let i=0; i<2; i++) {
